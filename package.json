@@ -20,7 +20,7 @@
         "dev": "node --watch src/main.ts",
         "build": "tsc --build",
         "build:watch": "tsc --build --watch",
-        "test": "vitest run",
+        "test": "vitest run --passWithNoTests",
         "test:watch": "vitest watch",
         "format:global": "prettier --cache --write --log-level=warn .",
         "packages:audit": "pnpm audit",
@@ -33,6 +33,7 @@
         "@vercel/style-guide": "^6.0.0",
         "eslint-config-prettier": "^10.0.1",
         "prettier": "^3.4.2",
-        "typescript": "^5.7.3"
+        "typescript": "^5.7.3",
+        "vitest": "^3.0.5"
     }
 }
