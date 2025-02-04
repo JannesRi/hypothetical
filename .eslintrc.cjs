@@ -32,6 +32,7 @@ module.exports = {
             { allowArray: true, allowBoolean: true, allowNumber: true },
         ],
         'import/no-default-export': 'off',
+        'no-console': 'off',
         'no-promise-executor-return': 'off',
         'unicorn/filename-case': [
             'error',
