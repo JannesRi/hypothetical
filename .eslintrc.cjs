@@ -31,6 +31,7 @@ module.exports = {
             'warn',
             { allowArray: true, allowBoolean: true, allowNumber: true },
         ],
+        'import/no-named-as-default': 'off',
         'import/no-default-export': 'off',
         'no-console': 'off',
         'no-promise-executor-return': 'off',

@@ -8,5 +8,6 @@
     "prettier.requireConfig": true,
     "prettier.configPath": ".prettierrc.json",
     "eslint.workingDirectories": [{ "mode": "auto" }],
+    "typescript.tsdk": "node_modules\\typescript\\lib",
     "vitest.disableWorkspaceWarning": true
 }
