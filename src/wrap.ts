@@ -1,10 +1,17 @@
 import { sTry } from './sTry.ts'
-import type { Func } from './types/Func.ts'
 
-export const wrap = <P extends unknown[], R>(fn: Func<P, R>) => {
+export const wrap = <
+    P extends unknown[],
+    R,
+    E = unknown,
+    TREAT extends boolean = true,
+>(
+    fn: (...args: [...P]) => R,
+    treatReturnedErrorsAsThrown: TREAT = true as TREAT,
+) => {
     return (...params: P) => {
         const result = () => fn(...params)
 
-        return sTry(result)
+        return sTry<R, E, TREAT>(result, treatReturnedErrorsAsThrown)
     }
 }

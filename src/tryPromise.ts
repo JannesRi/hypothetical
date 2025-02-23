@@ -1,7 +1,7 @@
 import { makeFailure, makeSuccess } from './types/Result.ts'
 import type { Try } from './types/Try.ts'
 
-export const tryPromise = async <R, E, TREAT extends boolean = true>(
+export const tryPromise = async <R, E = unknown, TREAT extends boolean = true>(
     promise: Promise<R>,
     treatReturnedErrorsAsThrown: TREAT = true as TREAT,
 ): Promise<Try<R, E, TREAT>> => {
