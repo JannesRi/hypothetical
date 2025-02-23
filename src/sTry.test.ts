@@ -125,6 +125,7 @@ describe('sTry', () => {
     it("should return Result if the async function doesn't throw", async () => {
         const fn = async () => 'success'
 
+        // add test case for await sTry(fn()), await sTry(() => fn()), await sTry(async () => fn())
         const [success, result, error] = await sTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
