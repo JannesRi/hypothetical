@@ -1,7 +1,7 @@
 import { sTry } from './sTry.ts'
 import type { Func } from './types/Func.ts'
 
-export const wrap = <
+export const sWrap = <
     P extends unknown[],
     R,
     E = unknown,
