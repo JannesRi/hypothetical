@@ -4,7 +4,7 @@ const project = resolve(process.cwd(), 'tsconfig.json')
 /** @type { import("eslint").Linter.LegacyConfig } */
 module.exports = {
     root: true,
-    ignorePatterns: ['vitest.config.ts'],
+    ignorePatterns: ['vitest.config.ts', 'tsup.config.ts'],
     extends: [
         require.resolve('@vercel/style-guide/eslint/node'),
         require.resolve('@vercel/style-guide/eslint/typescript'),

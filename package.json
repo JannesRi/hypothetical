@@ -9,6 +9,9 @@
         "name": "Jannes Ri"
     },
     "license": "ISC",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "prettier": "./.prettierrc.json",
     "scripts": {
         "format": "prettier --cache --write --log-level=warn src/**/*.ts",
@@ -16,10 +19,8 @@
         "lint:typecheck": "tsc --noEmit",
         "lint:eslint": "eslint --cache --ext .ts src",
         "lint": "npm run lint:typecheck && npm run lint:eslint && npm run format:check",
-        "start": "node src/main.ts",
-        "dev": "node --watch src/main.ts",
-        "build": "tsc --build",
-        "build:watch": "tsc --build --watch",
+        "build": "tsup",
+        "build:watch": "tsup --watch",
         "test": "vitest run",
         "test:watch": "vitest watch",
         "format:global": "prettier --cache --write --log-level=warn .",
