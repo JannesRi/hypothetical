@@ -3,6 +3,47 @@ import { sWrap } from './sWrap.ts'
 import type { Failure, Result } from './types/Result.ts'
 
 describe('sWrap', () => {
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should accept generics 1', () => {
+        const fn = () => {
+            throw new Error('error')
+
+            return 'success'
+        }
+
+        expectTypeOf(sWrap<[], string, Error>(fn)).toEqualTypeOf<
+            () => Result<string, Error>
+        >()
+    })
+
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should accept generics 2', () => {
+        const fn = () => {
+            throw new Error('error')
+        }
+
+        expectTypeOf(sWrap<[], never, Error>(fn)).toEqualTypeOf<
+            () => Failure<Error>
+        >()
+    })
+
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should accept generics 3', () => {
+        const fn = () => {
+            return new Error('error')
+
+            return 'success'
+        }
+
+        expectTypeOf(sWrap<[], Error | string, Error>(fn)).toEqualTypeOf<
+            () => Result<string, Error>
+        >()
+
+        expectTypeOf(sWrap(fn, false)).toMatchTypeOf<
+            () => Result<Error | string>
+        >()
+    })
+
     it('should wrap a sync function', () => {
         const add = (a: number, b: number) => a + b
         const wrappedAdd = sWrap(add)

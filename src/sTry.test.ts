@@ -6,6 +6,43 @@ import { sTry } from './sTry.ts'
 import type { Failure, Result } from './types/Result.ts'
 
 describe('sTry', () => {
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should accept generics 1', () => {
+        const fn = () => {
+            throw new Error('error')
+
+            return 'success'
+        }
+
+        expectTypeOf(sTry<string, Error>(fn)).toEqualTypeOf<
+            Result<string, Error>
+        >()
+    })
+
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should accept generics 2', () => {
+        const fn = () => {
+            throw new Error('error')
+        }
+
+        expectTypeOf(sTry<never, Error>(fn)).toEqualTypeOf<Failure<Error>>()
+    })
+
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should accept generics 3', () => {
+        const fn = () => {
+            return new Error('error')
+
+            return 'success'
+        }
+
+        expectTypeOf(sTry<Error | string, Error>(fn)).toEqualTypeOf<
+            Result<string, Error>
+        >()
+
+        expectTypeOf(sTry(fn, false)).toMatchTypeOf<Result<Error | string>>()
+    })
+
     it("should return Result if the sync function doesn't throw", () => {
         const fn = () => 'success'
 
