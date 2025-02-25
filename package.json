@@ -1,12 +1,22 @@
 {
     "name": "s-try",
-    "description": "",
-    "keywords": [],
+    "description": "Safely execute functions or promises",
     "version": "0.0.0",
-    "type": "module",
-    "packageManager": "pnpm@9.15.4",
+    "keywords": [
+        "try",
+        "catch",
+        "safe-try",
+        "async",
+        "await",
+        "promise",
+        "error handling"
+    ],
     "author": {
         "name": "Jannes Ri"
+    },
+    "homepage": "https://github.com/JannesRi/s-try",
+    "bugs": {
+        "url": "https://github.com/JannesRi/s-try/issues"
     },
     "repository": {
         "type": "git",
@@ -16,6 +26,13 @@
     "main": "dist/index.cjs",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "package.json",
+        "dist",
+        "README.md"
+    ],
+    "type": "module",
+    "packageManager": "pnpm@9.15.4",
     "prettier": "./.prettierrc.json",
     "scripts": {
         "format": "prettier --cache --write --log-level=warn src/**/*.ts",
