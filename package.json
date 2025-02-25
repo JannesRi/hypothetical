@@ -47,8 +47,7 @@
         "format:global": "prettier --cache --write --log-level=warn .",
         "packages:audit": "pnpm audit",
         "packages:outdated": "pnpm outdated -r !eslint",
-        "packages:upgrade": "pnpm upgrade -r --latest !eslint",
-        "postinstall": "pnpm packages:audit"
+        "packages:upgrade": "pnpm upgrade -r --latest !eslint"
     },
     "devDependencies": {
         "@total-typescript/ts-reset": "^0.6.1",
