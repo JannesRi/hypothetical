@@ -18,6 +18,11 @@ export type STry<
         : Try<R, E, TREAT>
     :   never
 
+export function sTry<TREAT extends boolean = true>(
+    expression: never,
+    treatReturnedErrorsAsThrown?: TREAT,
+): never
+
 export function sTry<R, E = unknown, TREAT extends boolean = true>(
     expression: Promise<R>,
     treatReturnedErrorsAsThrown?: TREAT,
