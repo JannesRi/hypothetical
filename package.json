@@ -14,13 +14,13 @@
     "author": {
         "name": "Jannes Ri"
     },
-    "homepage": "https://github.com/JannesRi/s-try",
+    "homepage": "https://github.com/JannesRi/bulwark",
     "bugs": {
-        "url": "https://github.com/JannesRi/s-try/issues"
+        "url": "https://github.com/JannesRi/bulwark/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/JannesRi/s-try.git"
+        "url": "https://github.com/JannesRi/bulwark.git"
     },
     "license": "ISC",
     "main": "dist/index.cjs",
