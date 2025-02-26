@@ -1,8 +1,40 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { sWrap } from './sWrap.ts'
+import type { Func } from './types/Func.ts'
 import type { Failure, Result } from './types/Result.ts'
 
 describe('sWrap', () => {
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it('should not accept other values 1', () => {
+        type Input<T, P extends unknown[] = unknown[], R = unknown> =
+            T extends Func<P, R> ? true : false
+
+        expectTypeOf<Input<() => unknown>>().toEqualTypeOf<true>()
+        expectTypeOf<
+            Input<(a: string) => unknown, [string]>
+        >().toEqualTypeOf<true>()
+
+        expectTypeOf<Input<string>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<number>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<boolean>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<null>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<undefined>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<unknown>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<unknown[]>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<object>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<symbol>>().toEqualTypeOf<false>()
+        expectTypeOf<Input<Promise<unknown>>>().toEqualTypeOf<false>()
+    })
+
+    // eslint-disable-next-line vitest/expect-expect -- type testing
+    it.fails('should not accept other values 2', () => {
+        const throwing = () => {
+            throw new Error('error')
+        }
+
+        expectTypeOf(sWrap(throwing())).toEqualTypeOf<never>()
+    })
+
     // eslint-disable-next-line vitest/expect-expect -- type testing
     it('should accept generics 1', () => {
         const fn = () => {
