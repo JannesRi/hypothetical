@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/only-throw-error -- testing */
 /* eslint-disable @typescript-eslint/require-await -- testing*/
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { sTry, type Tryable } from './sTry.ts'
+import { safeTry, type Tryable } from './safeTry.ts'
 import type { Failure, Result } from './types/Result.ts'
 
-describe('sTry', () => {
+describe('safeTry', () => {
     // eslint-disable-next-line vitest/expect-expect -- type testing
     it('should not accept other values 1', () => {
         type Input<T> = T extends Tryable<unknown> ? true : false
@@ -31,7 +31,7 @@ describe('sTry', () => {
             throw new Error('error')
         }
 
-        expectTypeOf(sTry(throwing())).toEqualTypeOf<never>()
+        expectTypeOf(safeTry(throwing())).toEqualTypeOf<never>()
     })
 
     // eslint-disable-next-line vitest/expect-expect -- type testing
@@ -42,7 +42,7 @@ describe('sTry', () => {
             return 'success'
         }
 
-        expectTypeOf(sTry<string, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeTry<string, Error>(fn)).toEqualTypeOf<
             Result<string, Error>
         >()
     })
@@ -53,7 +53,7 @@ describe('sTry', () => {
             throw new Error('error')
         }
 
-        expectTypeOf(sTry<never, Error>(fn)).toEqualTypeOf<Failure<Error>>()
+        expectTypeOf(safeTry<never, Error>(fn)).toEqualTypeOf<Failure<Error>>()
     })
 
     // eslint-disable-next-line vitest/expect-expect -- type testing
@@ -64,20 +64,20 @@ describe('sTry', () => {
             return 'success'
         }
 
-        expectTypeOf(sTry<Error | string, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeTry<Error | string, Error>(fn)).toEqualTypeOf<
             Result<string, Error>
         >()
 
-        expectTypeOf(sTry(fn, false)).toMatchTypeOf<Result<Error | string>>()
+        expectTypeOf(safeTry(fn, false)).toMatchTypeOf<Result<Error | string>>()
     })
 
     it("should return Result if the sync function doesn't throw", () => {
         const fn = () => 'success'
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Result<string>>()
-        expect(sTry(fn)).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Result<string>>()
+        expect(safeTry(fn)).not.toBeInstanceOf(Promise)
 
-        const [success, result, error] = sTry(fn)
+        const [success, result, error] = safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
         expect(success).toBe(true)
@@ -95,10 +95,10 @@ describe('sTry', () => {
             throw thrownError
         }
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Failure>()
-        expect(sTry(fn)).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Failure>()
+        expect(safeTry(fn)).not.toBeInstanceOf(Promise)
 
-        const [success, result, error] = sTry(fn)
+        const [success, result, error] = safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -116,10 +116,10 @@ describe('sTry', () => {
             throw thrownError
         }
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Failure>()
-        expect(sTry(fn)).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Failure>()
+        expect(safeTry(fn)).not.toBeInstanceOf(Promise)
 
-        const [success, result, error] = sTry(fn)
+        const [success, result, error] = safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -140,10 +140,10 @@ describe('sTry', () => {
             return 'success'
         }
 
-        expectTypeOf(sTry(() => fn(false))).toEqualTypeOf<Result<string>>()
-        expect(sTry(() => fn(false))).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(() => fn(false))).toEqualTypeOf<Result<string>>()
+        expect(safeTry(() => fn(false))).not.toBeInstanceOf(Promise)
 
-        const [success1, result1, error1] = sTry(() => fn(false))
+        const [success1, result1, error1] = safeTry(() => fn(false))
 
         expectTypeOf(success1).toEqualTypeOf<boolean>()
         expect(success1).toBe(true)
@@ -154,10 +154,10 @@ describe('sTry', () => {
         expectTypeOf(error1).toEqualTypeOf<unknown>()
         expect(error1).toBeNull()
 
-        expectTypeOf(sTry(() => fn(true))).toEqualTypeOf<Result<string>>()
-        expect(sTry(() => fn(true))).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(() => fn(true))).toEqualTypeOf<Result<string>>()
+        expect(safeTry(() => fn(true))).not.toBeInstanceOf(Promise)
 
-        const [success2, result2, error2] = sTry(() => fn(true))
+        const [success2, result2, error2] = safeTry(() => fn(true))
 
         expectTypeOf(success2).toEqualTypeOf<boolean>()
         expect(success2).toBe(false)
@@ -173,10 +173,10 @@ describe('sTry', () => {
         const returnedError = new Error('failure')
         const fn = () => returnedError
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Failure<Error>>()
-        expect(sTry(fn)).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Failure<Error>>()
+        expect(safeTry(fn)).not.toBeInstanceOf(Promise)
 
-        const [success, result, error] = sTry(fn)
+        const [success, result, error] = safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -193,10 +193,10 @@ describe('sTry', () => {
         const returnedError = new Error('success')
         const fn = () => returnedError
 
-        expectTypeOf(sTry(fn, false)).toEqualTypeOf<Result<Error>>()
-        expect(sTry(fn, false)).not.toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn, false)).toEqualTypeOf<Result<Error>>()
+        expect(safeTry(fn, false)).not.toBeInstanceOf(Promise)
 
-        const [success, result, error] = sTry(fn, false)
+        const [success, result, error] = safeTry(fn, false)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
         expect(success).toBe(true)
@@ -214,29 +214,31 @@ describe('sTry', () => {
         type Expected = Result<string>
         const expected = [true, 'success', null]
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Promise<Expected>>()
-        expect(sTry(fn)).toBeInstanceOf(Promise)
-        expectTypeOf(await sTry(fn)).toEqualTypeOf<Expected>()
-        expect(await sTry(fn)).toEqual(expected)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Promise<Expected>>()
+        expect(safeTry(fn)).toBeInstanceOf(Promise)
+        expectTypeOf(await safeTry(fn)).toEqualTypeOf<Expected>()
+        expect(await safeTry(fn)).toEqual(expected)
 
-        expectTypeOf(sTry(() => fn())).toEqualTypeOf<Promise<Expected>>()
-        expect(sTry(() => fn())).toBeInstanceOf(Promise)
-        expectTypeOf(await sTry(() => fn())).toEqualTypeOf<Expected>()
-        expect(await sTry(() => fn())).toEqual(expected)
+        expectTypeOf(safeTry(() => fn())).toEqualTypeOf<Promise<Expected>>()
+        expect(safeTry(() => fn())).toBeInstanceOf(Promise)
+        expectTypeOf(await safeTry(() => fn())).toEqualTypeOf<Expected>()
+        expect(await safeTry(() => fn())).toEqual(expected)
 
-        expectTypeOf(sTry(async () => fn())).toEqualTypeOf<Promise<Expected>>()
-        expect(sTry(async () => fn())).toBeInstanceOf(Promise)
-        expectTypeOf(await sTry(async () => fn())).toEqualTypeOf<Expected>()
-        expect(await sTry(async () => fn())).toEqual(expected)
+        expectTypeOf(safeTry(async () => fn())).toEqualTypeOf<
+            Promise<Expected>
+        >()
+        expect(safeTry(async () => fn())).toBeInstanceOf(Promise)
+        expectTypeOf(await safeTry(async () => fn())).toEqualTypeOf<Expected>()
+        expect(await safeTry(async () => fn())).toEqual(expected)
     })
 
     it("should return Result if the async function doesn't throw", async () => {
         const fn = async () => 'success'
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Promise<Result<string>>>()
-        expect(sTry(fn)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Promise<Result<string>>>()
+        expect(safeTry(fn)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(fn)
+        const [success, result, error] = await safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
         expect(success).toBe(true)
@@ -254,10 +256,10 @@ describe('sTry', () => {
             throw thrownError
         }
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Promise<Failure>>()
-        expect(sTry(fn)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Promise<Failure>>()
+        expect(safeTry(fn)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(fn)
+        const [success, result, error] = await safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -275,10 +277,10 @@ describe('sTry', () => {
             throw thrownError
         }
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Promise<Failure>>()
-        expect(sTry(fn)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Promise<Failure>>()
+        expect(safeTry(fn)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(fn)
+        const [success, result, error] = await safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -298,12 +300,12 @@ describe('sTry', () => {
             return 'success'
         }
 
-        expectTypeOf(sTry(() => fn(false))).toEqualTypeOf<
+        expectTypeOf(safeTry(() => fn(false))).toEqualTypeOf<
             Promise<Result<string>>
         >()
-        expect(sTry(() => fn(false))).toBeInstanceOf(Promise)
+        expect(safeTry(() => fn(false))).toBeInstanceOf(Promise)
 
-        const [success1, result1, error1] = await sTry(() => fn(false))
+        const [success1, result1, error1] = await safeTry(() => fn(false))
 
         expectTypeOf(success1).toEqualTypeOf<boolean>()
         expect(success1).toBe(true)
@@ -314,12 +316,12 @@ describe('sTry', () => {
         expectTypeOf(error1).toEqualTypeOf<unknown>()
         expect(error1).toBeNull()
 
-        expectTypeOf(sTry(() => fn(true))).toEqualTypeOf<
+        expectTypeOf(safeTry(() => fn(true))).toEqualTypeOf<
             Promise<Result<string>>
         >()
-        expect(sTry(() => fn(true))).toBeInstanceOf(Promise)
+        expect(safeTry(() => fn(true))).toBeInstanceOf(Promise)
 
-        const [success2, result2, error2] = await sTry(() => fn(true))
+        const [success2, result2, error2] = await safeTry(() => fn(true))
 
         expectTypeOf(success2).toEqualTypeOf<boolean>()
         expect(success2).toBe(false)
@@ -335,10 +337,10 @@ describe('sTry', () => {
         const returnedError = new Error('failure')
         const fn = async () => returnedError
 
-        expectTypeOf(sTry(fn)).toEqualTypeOf<Promise<Failure<Error>>>()
-        expect(sTry(fn)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn)).toEqualTypeOf<Promise<Failure<Error>>>()
+        expect(safeTry(fn)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(fn)
+        const [success, result, error] = await safeTry(fn)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -355,10 +357,10 @@ describe('sTry', () => {
         const returnedError = new Error('success')
         const fn = async () => returnedError
 
-        expectTypeOf(sTry(fn, false)).toEqualTypeOf<Promise<Result<Error>>>()
-        expect(sTry(fn, false)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(fn, false)).toEqualTypeOf<Promise<Result<Error>>>()
+        expect(safeTry(fn, false)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(fn, false)
+        const [success, result, error] = await safeTry(fn, false)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
         expect(success).toBe(true)
@@ -374,10 +376,10 @@ describe('sTry', () => {
     it('should return Result if the promise is resolved successfully', async () => {
         const promise = Promise.resolve('success')
 
-        expectTypeOf(sTry(promise)).toEqualTypeOf<Promise<Result<string>>>()
-        expect(sTry(promise)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(promise)).toEqualTypeOf<Promise<Result<string>>>()
+        expect(safeTry(promise)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(promise)
+        const [success, result, error] = await safeTry(promise)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
         expect(success).toBe(true)
@@ -393,10 +395,10 @@ describe('sTry', () => {
         const returnedError = 'failure'
         const promise = Promise.reject(returnedError)
 
-        expectTypeOf(sTry(promise)).toEqualTypeOf<Promise<Failure>>()
-        expect(sTry(promise)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(promise)).toEqualTypeOf<Promise<Failure>>()
+        expect(safeTry(promise)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(promise)
+        const [success, result, error] = await safeTry(promise)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -412,10 +414,10 @@ describe('sTry', () => {
         const returnedError = new Error('failure')
         const promise = Promise.reject(returnedError)
 
-        expectTypeOf(sTry(promise)).toEqualTypeOf<Promise<Failure>>()
-        expect(sTry(promise)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(promise)).toEqualTypeOf<Promise<Failure>>()
+        expect(safeTry(promise)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(promise)
+        const [success, result, error] = await safeTry(promise)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -431,10 +433,10 @@ describe('sTry', () => {
         const returnedError = new Error('failure')
         const promise = Promise.resolve(returnedError)
 
-        expectTypeOf(sTry(promise)).toEqualTypeOf<Promise<Failure<Error>>>()
-        expect(sTry(promise)).toBeInstanceOf(Promise)
+        expectTypeOf(safeTry(promise)).toEqualTypeOf<Promise<Failure<Error>>>()
+        expect(safeTry(promise)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(promise)
+        const [success, result, error] = await safeTry(promise)
 
         expectTypeOf(success).toEqualTypeOf<false>()
         expect(success).toBe(false)
@@ -451,12 +453,12 @@ describe('sTry', () => {
         const returnedError = new Error('success')
         const promise = Promise.resolve(returnedError)
 
-        expectTypeOf(sTry(promise, false)).toEqualTypeOf<
+        expectTypeOf(safeTry(promise, false)).toEqualTypeOf<
             Promise<Result<Error>>
         >()
-        expect(sTry(promise, false)).toBeInstanceOf(Promise)
+        expect(safeTry(promise, false)).toBeInstanceOf(Promise)
 
-        const [success, result, error] = await sTry(promise, false)
+        const [success, result, error] = await safeTry(promise, false)
 
         expectTypeOf(success).toEqualTypeOf<boolean>()
         expect(success).toBe(true)

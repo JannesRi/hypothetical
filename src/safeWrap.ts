@@ -1,26 +1,26 @@
-import { sTry, type STry } from './sTry.ts'
+import { safeTry, type SafeTry } from './safeTry.ts'
 import type { Func } from './types/Func.ts'
 
-export type SWrap<
+export type SafeWrap<
     P extends unknown[],
     R,
     E = unknown,
     TREAT extends boolean = true,
-> = (...params: P) => STry<R, E, TREAT, Func<[], R>>
+> = (...params: P) => SafeTry<R, E, TREAT, Func<[], R>>
 
-export function sWrap<TREAT extends boolean = true>(
+export function safeWrap<TREAT extends boolean = true>(
     fn: never,
     treatReturnedErrorsAsThrown?: TREAT,
 ): never
 
-export function sWrap<
+export function safeWrap<
     P extends unknown[],
     R,
     E = unknown,
     TREAT extends boolean = true,
->(fn: Func<P, R>, treatReturnedErrorsAsThrown?: TREAT): SWrap<P, R, E, TREAT>
+>(fn: Func<P, R>, treatReturnedErrorsAsThrown?: TREAT): SafeWrap<P, R, E, TREAT>
 
-export function sWrap<
+export function safeWrap<
     P extends unknown[],
     R,
     E = unknown,
@@ -28,10 +28,10 @@ export function sWrap<
 >(
     fn: Func<P, R>,
     treatReturnedErrorsAsThrown: TREAT = true as TREAT,
-): SWrap<P, R, E, TREAT> {
+): SafeWrap<P, R, E, TREAT> {
     return (...params: P) => {
         const result = () => fn(...params)
 
-        return sTry<R, E, TREAT>(result, treatReturnedErrorsAsThrown)
+        return safeTry<R, E, TREAT>(result, treatReturnedErrorsAsThrown)
     }
 }

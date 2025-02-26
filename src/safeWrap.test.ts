@@ -1,9 +1,9 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { sWrap } from './sWrap.ts'
+import { safeWrap } from './safeWrap.ts'
 import type { Func } from './types/Func.ts'
 import type { Failure, Result } from './types/Result.ts'
 
-describe('sWrap', () => {
+describe('safeWrap', () => {
     // eslint-disable-next-line vitest/expect-expect -- type testing
     it('should not accept other values 1', () => {
         type Input<T, P extends unknown[] = unknown[], R = unknown> =
@@ -32,7 +32,7 @@ describe('sWrap', () => {
             throw new Error('error')
         }
 
-        expectTypeOf(sWrap(throwing())).toEqualTypeOf<never>()
+        expectTypeOf(safeWrap(throwing())).toEqualTypeOf<never>()
     })
 
     // eslint-disable-next-line vitest/expect-expect -- type testing
@@ -43,7 +43,7 @@ describe('sWrap', () => {
             return 'success'
         }
 
-        expectTypeOf(sWrap<[], string, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeWrap<[], string, Error>(fn)).toEqualTypeOf<
             () => Result<string, Error>
         >()
     })
@@ -54,7 +54,7 @@ describe('sWrap', () => {
             throw new Error('error')
         }
 
-        expectTypeOf(sWrap<[], never, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeWrap<[], never, Error>(fn)).toEqualTypeOf<
             () => Failure<Error>
         >()
     })
@@ -67,18 +67,18 @@ describe('sWrap', () => {
             return 'success'
         }
 
-        expectTypeOf(sWrap<[], Error | string, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeWrap<[], Error | string, Error>(fn)).toEqualTypeOf<
             () => Result<string, Error>
         >()
 
-        expectTypeOf(sWrap(fn, false)).toMatchTypeOf<
+        expectTypeOf(safeWrap(fn, false)).toMatchTypeOf<
             () => Result<Error | string>
         >()
     })
 
     it('should wrap a sync function', () => {
         const add = (a: number, b: number) => a + b
-        const wrappedAdd = sWrap(add)
+        const wrappedAdd = safeWrap(add)
 
         expectTypeOf(wrappedAdd).toEqualTypeOf<
             (a: number, b: number) => Result<number>
@@ -103,7 +103,7 @@ describe('sWrap', () => {
 
             return a / b
         }
-        const wrappedDiv = sWrap(div)
+        const wrappedDiv = safeWrap(div)
 
         expectTypeOf(wrappedDiv).toEqualTypeOf<
             (a: number, b: number) => Result<number>
@@ -129,7 +129,7 @@ describe('sWrap', () => {
 
             return a / b
         }
-        const wrappedDiv = sWrap(div)
+        const wrappedDiv = safeWrap(div)
 
         expectTypeOf(wrappedDiv).toMatchTypeOf<
             (a: number, b: number) => Result<number> | Failure<Error>
@@ -155,7 +155,7 @@ describe('sWrap', () => {
 
             return a / b
         }
-        const wrappedDiv = sWrap(div, false)
+        const wrappedDiv = safeWrap(div, false)
 
         expectTypeOf(wrappedDiv).toMatchTypeOf<
             (a: number, b: number) => Result<number | Error>
@@ -177,7 +177,7 @@ describe('sWrap', () => {
 
     it('should wrap an async function', async () => {
         const asyncAdd = async (a: number, b: number) => Promise.resolve(a + b)
-        const wrappedAsyncAdd = sWrap(asyncAdd)
+        const wrappedAsyncAdd = safeWrap(asyncAdd)
 
         expectTypeOf(wrappedAsyncAdd).toEqualTypeOf<
             (a: number, b: number) => Promise<Result<number>>
@@ -204,7 +204,7 @@ describe('sWrap', () => {
                 resolve(a / b)
             })
         }
-        const wrappedAsyncDiv = sWrap(asyncDiv)
+        const wrappedAsyncDiv = safeWrap(asyncDiv)
 
         expectTypeOf(wrappedAsyncDiv).toEqualTypeOf<
             (a: number, b: number) => Promise<Result<number>>
@@ -232,7 +232,7 @@ describe('sWrap', () => {
                 resolve(a / b)
             })
         }
-        const wrappedAsyncDiv = sWrap(asyncDiv)
+        const wrappedAsyncDiv = safeWrap(asyncDiv)
 
         expectTypeOf(wrappedAsyncDiv).toEqualTypeOf<
             (a: number, b: number) => Promise<Result<number> | Failure<Error>>
@@ -260,7 +260,7 @@ describe('sWrap', () => {
                 resolve(a / b)
             })
         }
-        const wrappedAsyncDiv = sWrap(asyncDiv, false)
+        const wrappedAsyncDiv = safeWrap(asyncDiv, false)
 
         expectTypeOf(wrappedAsyncDiv).toMatchTypeOf<
             (a: number, b: number) => Promise<Result<number | Error>>

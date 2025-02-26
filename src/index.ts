@@ -1,4 +1,4 @@
-export * from './sTry.ts'
-export * from './sWrap.ts'
+export * from './safeTry.ts'
+export * from './safeWrap.ts'
 export * from './types/Result.ts'
 export * from './types/Try.ts'
