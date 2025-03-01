@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/only-throw-error -- testing */
 /* eslint-disable @typescript-eslint/require-await -- testing*/
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { safeTry, type Tryable } from './safeTry.ts'
+import { safeTry } from './safeTry.ts'
 import type { Failure, Result } from './types/Result.ts'
+import type { Tryable } from './types/TryExpression.ts'
 
 describe('safeTry', () => {
     // eslint-disable-next-line vitest/expect-expect -- type testing

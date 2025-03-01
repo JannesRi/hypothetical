@@ -1,22 +1,7 @@
 import { tryPromise } from './tryPromise.ts'
 import type { Func } from './types/Func.ts'
-import { makeFailure, makeSuccess, type Failure } from './types/Result.ts'
-import type { Try } from './types/Try.ts'
-
-export type Tryable<R> = Promise<R> | Func<[], R>
-
-export type SafeTry<
-    R,
-    E = unknown,
-    TREAT extends boolean = true,
-    Expression extends Tryable<R> = Tryable<R>,
-> =
-    Expression extends Promise<R> ? Promise<Try<R, E, TREAT>>
-    : Expression extends Func<[], R> ?
-        [R] extends [never] ? Failure<E>
-        : R extends Promise<unknown> ? Promise<Try<Awaited<R>, E, TREAT>>
-        : Try<R, E, TREAT>
-    :   never
+import { makeFailure, makeSuccess } from './types/Result.ts'
+import type { Tryable, TryExpression } from './types/TryExpression.ts'
 
 export function safeTry<TREAT extends boolean = true>(
     expression: never,
@@ -26,17 +11,17 @@ export function safeTry<TREAT extends boolean = true>(
 export function safeTry<R, E = unknown, TREAT extends boolean = true>(
     expression: Promise<R>,
     treatReturnedErrorsAsThrown?: TREAT,
-): SafeTry<R, E, TREAT, Promise<R>>
+): TryExpression<R, E, TREAT, Promise<R>>
 
 export function safeTry<R, E = unknown, TREAT extends boolean = true>(
     expression: Func<[], R>,
     treatReturnedErrorsAsThrown?: TREAT,
-): SafeTry<R, E, TREAT, Func<[], R>>
+): TryExpression<R, E, TREAT, Func<[], R>>
 
 export function safeTry<R, E = unknown, TREAT extends boolean = true>(
     expression: Tryable<R>,
     treatReturnedErrorsAsThrown: TREAT = true as TREAT,
-): SafeTry<R, E, TREAT> {
+): TryExpression<R, E, TREAT> {
     try {
         if (typeof expression === 'function') {
             const result = expression()
@@ -51,11 +36,11 @@ export function safeTry<R, E = unknown, TREAT extends boolean = true>(
                 throw result
             }
 
-            return makeSuccess(result) as SafeTry<R, E, TREAT>
+            return makeSuccess(result) as TryExpression<R, E, TREAT>
         }
 
         return tryPromise<R, E, TREAT>(expression, treatReturnedErrorsAsThrown)
     } catch (error) {
-        return makeFailure(error) as SafeTry<R, E, TREAT>
+        return makeFailure(error) as TryExpression<R, E, TREAT>
     }
 }

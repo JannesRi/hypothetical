@@ -1,12 +1,13 @@
-import { safeTry, type SafeTry } from './safeTry.ts'
+import { safeTry } from './safeTry.ts'
 import type { Func } from './types/Func.ts'
+import type { TryExpression } from './types/TryExpression.ts'
 
 export type SafeWrap<
     P extends unknown[],
     R,
     E = unknown,
     TREAT extends boolean = true,
-> = (...params: P) => SafeTry<R, E, TREAT, Func<[], R>>
+> = (...params: P) => TryExpression<R, E, TREAT, Func<[], R>>
 
 export function safeWrap<TREAT extends boolean = true>(
     fn: never,
