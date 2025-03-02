@@ -90,8 +90,9 @@ const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ```
 
 **Ensure you pass a function reference, not the function call itself:**
-✅ `safeTry(thisCouldBeYourFunction)`
-❌ `safeTry(thisCouldBeYourFunction())`
+
+- ✅ `safeTry(thisCouldBeYourFunction)`
+- ❌ `safeTry(thisCouldBeYourFunction())`
 
 ## Examples
 
