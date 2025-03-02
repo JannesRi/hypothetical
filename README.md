@@ -116,12 +116,14 @@ const [success, result, error] = safeTry(() => divide(1, 0))
 import { safeTry } from "bulwark"
 import { readFile } from "node:fs/promises"
 
-const [success, data, error] = await safeTry(readFile("nonexistent-file.txt"))
+const [success, result, error] = await safeTry(readFile("nonexistent-file.txt"))
 ```
 
 ### Try a promise
 
 ```ts
+import { safeTry } from "bulwark"
+
 const promise = Promise.reject(new Error('failure'))
 
 const [success, result, error] = await safeTry(promise)
@@ -149,5 +151,5 @@ import { safeWrap } from "bulwark"
 import { readFile } from "node:fs/promises"
 
 const safeReadFile = safeWrap((filename: string) => readFile(filename))
-const [success, data, error] = await safeReadFile("nonexistent-file.txt")
+const [success, result, error] = await safeReadFile("nonexistent-file.txt")
 ```
