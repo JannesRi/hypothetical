@@ -71,7 +71,6 @@ import { safeTry } from 'bulwark'
 const fn = () => new Error('failure')
 
 const [success, result, error] = safeTry(fn, false)
-// ^^^^^
 ```
 
 ## Installation

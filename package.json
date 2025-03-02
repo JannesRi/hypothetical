@@ -1,7 +1,7 @@
 {
     "name": "bulwark",
     "description": "Safely execute functions and promises",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "keywords": [
         "try",
         "catch",
