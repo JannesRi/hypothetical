@@ -1,6 +1,6 @@
 {
-    "name": "secure-try",
-    "description": "Safely execute functions and promises",
+    "name": "hypothetical",
+    "description": "Hypothetical simplifies error handling by providing a structured, predictable way to execute functions safely.",
     "version": "1.0.0",
     "keywords": [
         "try",
@@ -14,13 +14,13 @@
     "author": {
         "name": "Jannes Ri"
     },
-    "homepage": "https://github.com/JannesRi/secure-try",
+    "homepage": "https://github.com/JannesRi/hypothetical",
     "bugs": {
-        "url": "https://github.com/JannesRi/secure-try/issues"
+        "url": "https://github.com/JannesRi/hypothetical/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/JannesRi/secure-try.git"
+        "url": "https://github.com/JannesRi/hypothetical.git"
     },
     "license": "ISC",
     "main": "dist/index.cjs",
