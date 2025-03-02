@@ -43,7 +43,7 @@ describe('safeWrap', () => {
             return 'success'
         }
 
-        expectTypeOf(safeWrap<[], string, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeWrap<() => string, Error>(fn)).toEqualTypeOf<
             () => Result<string, Error>
         >()
     })
@@ -54,7 +54,7 @@ describe('safeWrap', () => {
             throw new Error('error')
         }
 
-        expectTypeOf(safeWrap<[], never, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeWrap<() => never, Error>(fn)).toEqualTypeOf<
             () => Failure<Error>
         >()
     })
@@ -67,7 +67,7 @@ describe('safeWrap', () => {
             return 'success'
         }
 
-        expectTypeOf(safeWrap<[], Error | string, Error>(fn)).toEqualTypeOf<
+        expectTypeOf(safeWrap<() => Error | string, Error>(fn)).toEqualTypeOf<
             () => Result<string, Error>
         >()
 
@@ -278,5 +278,69 @@ describe('safeWrap', () => {
 
         expectTypeOf(error).toEqualTypeOf<unknown>()
         expect(error).toBe(null)
+    })
+
+    it('should wrap an overloaded function', async () => {
+        const thrownError = new Error('Invalid arguments')
+
+        function add(a: number, b: number): number
+        function add(a: boolean, b: boolean): never
+        async function add(a: string, b: string): Promise<string>
+        function add(
+            a: number | boolean | string,
+            b: number | boolean | string,
+        ): number | Promise<string> {
+            if (typeof a === 'number' && typeof b === 'number') return a + b
+            if (typeof a === 'string' && typeof b === 'string')
+                return Promise.resolve(a + b)
+
+            throw thrownError
+        }
+
+        const wrappedAdd = safeWrap(add)
+
+        // case 1: adding numbers
+        expectTypeOf(wrappedAdd(1, 2)).toEqualTypeOf<Result<number>>()
+        expect(wrappedAdd(1, 2)).not.toBeInstanceOf(Promise)
+        const [success1, result1, error1] = wrappedAdd(1, 2)
+
+        expectTypeOf(success1).toEqualTypeOf<boolean>()
+        expect(success1).toBe(true)
+
+        expectTypeOf(result1).toEqualTypeOf<number | null>()
+        expect(result1).toBe(3)
+
+        expectTypeOf(error1).toEqualTypeOf<unknown>()
+        expect(error1).toBeNull()
+
+        // case 2: adding booleans
+        expectTypeOf(wrappedAdd(true, true)).toEqualTypeOf<Failure>()
+        expect(wrappedAdd(true, true)).not.toBeInstanceOf(Promise)
+        const [success2, result2, error2] = wrappedAdd(true, true)
+
+        expectTypeOf(success2).toEqualTypeOf<false>()
+        expect(success2).toBe(false)
+
+        expectTypeOf(result2).toEqualTypeOf<null>()
+        expect(result2).toBeNull()
+
+        expectTypeOf(error2).toEqualTypeOf<unknown>()
+        expect(error2).toBe(thrownError)
+
+        // case 3: adding strings
+        expectTypeOf(wrappedAdd('1', '2')).toEqualTypeOf<
+            Promise<Result<string>>
+        >()
+        expect(wrappedAdd('1', '2')).toBeInstanceOf(Promise)
+        const [success3, result3, error3] = await wrappedAdd('1', '2')
+
+        expectTypeOf(success3).toEqualTypeOf<boolean>()
+        expect(success3).toBe(true)
+
+        expectTypeOf(result3).toEqualTypeOf<string | null>()
+        expect(result3).toBe('12')
+
+        expectTypeOf(error3).toEqualTypeOf<unknown>()
+        expect(error3).toBeNull()
     })
 })

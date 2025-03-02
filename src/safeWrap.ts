@@ -1,13 +1,6 @@
 import { safeTry } from './safeTry.ts'
 import type { Func } from './types/Func.ts'
-import type { TryExpression } from './types/TryExpression.ts'
-
-export type SafeWrap<
-    P extends unknown[],
-    R,
-    E = unknown,
-    TREAT extends boolean = true,
-> = (...params: P) => TryExpression<R, E, TREAT, Func<[], R>>
+import type { SafeWrap } from './types/SafeWrap.ts'
 
 export function safeWrap<TREAT extends boolean = true>(
     fn: never,
@@ -15,24 +8,25 @@ export function safeWrap<TREAT extends boolean = true>(
 ): never
 
 export function safeWrap<
-    P extends unknown[],
-    R,
+    F extends Func,
     E = unknown,
     TREAT extends boolean = true,
->(fn: Func<P, R>, treatReturnedErrorsAsThrown?: TREAT): SafeWrap<P, R, E, TREAT>
+>(fn: F, treatReturnedErrorsAsThrown?: TREAT): SafeWrap<F, E, TREAT>
 
 export function safeWrap<
-    P extends unknown[],
-    R,
+    F extends Func,
     E = unknown,
     TREAT extends boolean = true,
 >(
-    fn: Func<P, R>,
+    fn: F,
     treatReturnedErrorsAsThrown: TREAT = true as TREAT,
-): SafeWrap<P, R, E, TREAT> {
-    return (...params: P) => {
+): SafeWrap<F, E, TREAT> {
+    const wrapped = (...params: unknown[]) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- calling it with the same params
         const result = () => fn(...params)
 
-        return safeTry<R, E, TREAT>(result, treatReturnedErrorsAsThrown)
+        return safeTry(result, treatReturnedErrorsAsThrown)
     }
+
+    return wrapped as SafeWrap<F, E, TREAT>
 }
