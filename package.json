@@ -44,6 +44,7 @@
         "build:watch": "tsup --watch",
         "test": "vitest run",
         "test:watch": "vitest watch",
+        "release": "pnpm run build && changeset publish",
         "format:global": "prettier --cache --write --log-level=warn .",
         "packages:audit": "pnpm audit",
         "packages:outdated": "pnpm outdated -r !eslint",
