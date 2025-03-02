@@ -16,9 +16,9 @@ if (!success) {
 
 ## Features
 
-- ✅ **Safe execution:** Run synchronous and asynchronous functions without unexpected crashes  
-- 🔄 **Wrap functions for automatic error handling:** No need for excessive `try-catch` blocks  
-- 🏷️ **TypeScript support:** Fully typed for better developer experience  
+- ✅ **Safe execution:** Run synchronous and asynchronous functions without unexpected crashes
+- 🔄 **Wrap functions for automatic error handling:** No need for excessive `try-catch` blocks
+- 🏷️ **TypeScript support:** Fully typed for better developer experience
 
 ## Use Cases
 
@@ -36,7 +36,7 @@ Bulwark standardizes error handling by returning predictable tuple structures, m
 Thus, the data can easily be [destructured](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment):
 
 ```ts
-import { safeTry } from "bulwark"
+import { safeTry } from 'bulwark'
 
 const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ```
@@ -66,12 +66,12 @@ Returning errors instead of throwing them can improve type safety. This forces t
 However, if you do not like this behavior you can disable it through the `treatReturnedErrorsAsThrown` parameter:
 
 ```ts
-import { safeTry } from "bulwark"
+import { safeTry } from 'bulwark'
 
 const fn = () => new Error('failure')
 
 const [success, result, error] = safeTry(fn, false)
-                                          // ^^^^^
+// ^^^^^
 ```
 
 ## Installation
@@ -85,7 +85,7 @@ npm i bulwark
 After installing **Bulwark**, simply import and use it:
 
 ```ts
-import { safeTry } from "bulwark"
+import { safeTry } from 'bulwark'
 
 const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ```
@@ -99,7 +99,7 @@ const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ### Try a synchronous function
 
 ```ts
-import { safeTry } from "bulwark"
+import { safeTry } from 'bulwark'
 
 const divide = (a: number, b: number) => {
     if (b === 0) throw new Error('Cannot divide by zero')
@@ -113,16 +113,16 @@ const [success, result, error] = safeTry(() => divide(1, 0))
 ### Try an asynchronous function
 
 ```ts
-import { safeTry } from "bulwark"
-import { readFile } from "node:fs/promises"
+import { safeTry } from 'bulwark'
+import { readFile } from 'node:fs/promises'
 
-const [success, result, error] = await safeTry(readFile("nonexistent-file.txt"))
+const [success, result, error] = await safeTry(readFile('nonexistent-file.txt'))
 ```
 
 ### Try a promise
 
 ```ts
-import { safeTry } from "bulwark"
+import { safeTry } from 'bulwark'
 
 const promise = Promise.reject(new Error('failure'))
 
@@ -132,7 +132,7 @@ const [success, result, error] = await safeTry(promise)
 ### Wrap a synchronous function
 
 ```ts
-import { safeWrap } from "bulwark"
+import { safeWrap } from 'bulwark'
 
 const divide = (a: number, b: number) => {
     if (b === 0) throw new Error('Cannot divide by zero')
@@ -147,9 +147,9 @@ const [success, result, error] = wrappedDivide(1, 0)
 ### Wrap an asynchronous function
 
 ```ts
-import { safeWrap } from "bulwark"
-import { readFile } from "node:fs/promises"
+import { safeWrap } from 'bulwark'
+import { readFile } from 'node:fs/promises'
 
 const safeReadFile = safeWrap((filename: string) => readFile(filename))
-const [success, result, error] = await safeReadFile("nonexistent-file.txt")
+const [success, result, error] = await safeReadFile('nonexistent-file.txt')
 ```
