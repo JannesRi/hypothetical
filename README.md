@@ -1,10 +1,10 @@
-# S-Try
+# Secure-Try
 
-S-Try simplifies error handling by providing a structured, predictable way to execute functions safely.
+Secure-Try simplifies error handling by providing a structured, predictable way to execute functions safely.
 
-## Why should you use S-Try?
+## Why should you use Secure-Try?
 
-Handling errors in JavaScript can be tedious. Traditional `try-catch` blocks add boilerplate and make code harder to read. **S-Try** offers a clean, structured way to handle errors with a guard-clause-like syntax:
+Handling errors in JavaScript can be tedious. Traditional `try-catch` blocks add boilerplate and make code harder to read. **Secure-Try** offers a clean, structured way to handle errors with a guard-clause-like syntax:
 
 ```ts
 const [success, result, error] = safeTry(thisCouldBeYourFunction)
@@ -28,7 +28,7 @@ if (!success) {
 
 ## Design
 
-S-Try standardizes error handling by returning predictable tuple structures, making it easier to work with functions that may fail. Data is returned in the following formats:
+Secure-Try standardizes error handling by returning predictable tuple structures, making it easier to work with functions that may fail. Data is returned in the following formats:
 
 - **Success**: [true, result, null]
 - **Failure**: [false, null, error]
@@ -36,7 +36,7 @@ S-Try standardizes error handling by returning predictable tuple structures, mak
 Thus, the data can easily be [destructured](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment):
 
 ```ts
-import { safeTry } from 's-try'
+import { safeTry } from 'secure-try'
 
 const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ```
@@ -57,7 +57,7 @@ const mightThrow = () => {
 
 In this example, you can't determine whether the function executed successfully or failed based solely on its return or thrown value. Early on it was decided to not modify the returned data.
 
-To address this, S-Try introduces a **status boolean** (`true` for success, `false` for failure), ensuring predictable error handling.
+To address this, Secure-Try introduces a **status boolean** (`true` for success, `false` for failure), ensuring predictable error handling.
 
 ### Why are returned errors counted as failures?
 
@@ -66,7 +66,7 @@ Returning errors instead of throwing them can improve type safety. This forces t
 However, if you do not like this behavior you can disable it through the `treatReturnedErrorsAsThrown` parameter:
 
 ```ts
-import { safeTry } from 's-try'
+import { safeTry } from 'secure-try'
 
 const fn = () => new Error('failure')
 
@@ -76,15 +76,15 @@ const [success, result, error] = safeTry(fn, false)
 ## Installation
 
 ```sh
-npm i s-try
+npm i secure-try
 ```
 
 ## Getting Started
 
-After installing **S-Try**, simply import and use it:
+After installing **Secure-Try**, simply import and use it:
 
 ```ts
-import { safeTry } from 's-try'
+import { safeTry } from 'secure-try'
 
 const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ```
@@ -99,7 +99,7 @@ const [success, result, error] = safeTry(thisCouldBeYourFunction)
 ### Try a synchronous function
 
 ```ts
-import { safeTry } from 's-try'
+import { safeTry } from 'secure-try'
 
 const divide = (a: number, b: number) => {
     if (b === 0) throw new Error('Cannot divide by zero')
@@ -113,7 +113,7 @@ const [success, result, error] = safeTry(() => divide(1, 0))
 ### Try an asynchronous function
 
 ```ts
-import { safeTry } from 's-try'
+import { safeTry } from 'secure-try'
 import { readFile } from 'node:fs/promises'
 
 const [success, result, error] = await safeTry(readFile('nonexistent-file.txt'))
@@ -122,7 +122,7 @@ const [success, result, error] = await safeTry(readFile('nonexistent-file.txt'))
 ### Try a promise
 
 ```ts
-import { safeTry } from 's-try'
+import { safeTry } from 'secure-try'
 
 const promise = Promise.reject(new Error('failure'))
 
@@ -132,7 +132,7 @@ const [success, result, error] = await safeTry(promise)
 ### Wrap a synchronous function
 
 ```ts
-import { safeWrap } from 's-try'
+import { safeWrap } from 'secure-try'
 
 const divide = (a: number, b: number) => {
     if (b === 0) throw new Error('Cannot divide by zero')
@@ -147,7 +147,7 @@ const [success, result, error] = wrappedDivide(1, 0)
 ### Wrap an asynchronous function
 
 ```ts
-import { safeWrap } from 's-try'
+import { safeWrap } from 'secure-try'
 import { readFile } from 'node:fs/promises'
 
 const safeReadFile = safeWrap((filename: string) => readFile(filename))
