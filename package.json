@@ -29,7 +29,8 @@
     "files": [
         "package.json",
         "dist",
-        "README.md"
+        "README.md",
+        "LICENSE"
     ],
     "type": "module",
     "packageManager": "pnpm@9.15.4",

@@ -117,7 +117,7 @@ const [success, result, error] = safeTry(() => divide(1, 0))
 import { safeTry } from 'hypothetical'
 import { readFile } from 'node:fs/promises'
 
-const [success, result, error] = await safeTry(readFile('nonexistent-file.txt'))
+const [success, result, error] = await safeTry(async () => readFile('nonexistent-file.txt'))
 ```
 
 ### Try a promise
