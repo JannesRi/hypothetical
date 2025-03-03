@@ -1,5 +1,11 @@
 # hypothetical
 
+## 1.0.5
+
+### Patch Changes
+
+- 4486274: docs: fix try an asynchronous function example
+
 ## 1.0.4
 
 ### Patch Changes
