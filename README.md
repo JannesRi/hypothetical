@@ -71,6 +71,7 @@ import { safeTry } from 'hypothetical'
 const fn = () => new Error('failure')
 
 const [success, result, error] = safeTry(fn, false)
+                                          // ^^^^^
 ```
 
 ## Installation
