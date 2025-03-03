@@ -8,13 +8,15 @@ export function safeWrap<TREAT extends boolean = true>(
 ): never
 
 export function safeWrap<
-    F extends Func,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- better type inference than `unknown`
+    F extends Func<any[], any>,
     E = unknown,
     TREAT extends boolean = true,
 >(fn: F, treatReturnedErrorsAsThrown?: TREAT): SafeWrap<F, E, TREAT>
 
 export function safeWrap<
-    F extends Func,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- better type inference than `unknown`
+    F extends Func<any[], any>,
     E = unknown,
     TREAT extends boolean = true,
 >(
@@ -22,7 +24,7 @@ export function safeWrap<
     treatReturnedErrorsAsThrown: TREAT = true as TREAT,
 ): SafeWrap<F, E, TREAT> {
     const wrapped = (...params: unknown[]) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- calling it with the same params
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- calling it with the same parameters as the function signature
         const result = () => fn(...params)
 
         return safeTry(result, treatReturnedErrorsAsThrown)
