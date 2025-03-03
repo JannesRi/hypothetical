@@ -342,5 +342,9 @@ describe('safeWrap', () => {
 
         expectTypeOf(error3).toEqualTypeOf<unknown>()
         expect(error3).toBeNull()
+
+        // case 4: invalid arguments
+        // @ts-expect-error -- intentionally testing invalid arguments
+        const _case4 = wrappedAdd(1, '2')
     })
 })
