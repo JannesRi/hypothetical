@@ -1,5 +1,0 @@
----
-'hypothetical': patch
----
-
-Add .prettierignore

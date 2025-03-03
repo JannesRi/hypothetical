@@ -1,5 +1,14 @@
 # hypothetical
 
+## 1.0.4
+
+### Patch Changes
+
+- 539d2bf: Set default values for Func<P, R> generic back to unknown
+- 190c169: Add .prettierignore
+- eaca269: Bump prettier
+- c9726c7: test: add test case for a call of an overloaded function with invalid parameters
+
 ## 1.0.3
 
 ### Patch Changes
