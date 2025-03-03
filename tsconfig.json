@@ -1,6 +1,6 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
-    "include": ["src"],
+    "include": ["src", "reset.d.ts"],
     "compilerOptions": {
         /* Basic Options */
         "target": "ESNext",
