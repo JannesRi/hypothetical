@@ -1,5 +1,12 @@
 # hypothetical
 
+## 1.0.6
+
+### Patch Changes
+
+- 7981d2b: refactor: rename Try<> to ToResult<>
+- f58807a: docs: add await keyword to "try an asynchronous function" example
+
 ## 1.0.5
 
 ### Patch Changes
