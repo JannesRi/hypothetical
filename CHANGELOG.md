@@ -1,5 +1,15 @@
 # hypothetical
 
+## 1.0.6
+
+### Patch Changes
+
+- 752e53c: chore: set permissions for lint & test github actions
+- 7981d2b: refactor: rename Try<> to ToResult<>
+- 6c9caeb: fix: export AddSignature type
+- f58807a: docs: add await keyword to "try an asynchronous function" example
+- a49c4cb: chore: update packages
+
 ## 1.0.5
 
 ### Patch Changes

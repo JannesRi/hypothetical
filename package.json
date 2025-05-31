@@ -1,7 +1,7 @@
 {
     "name": "hypothetical",
     "description": "Hypothetical simplifies error handling by providing a structured, predictable way to execute functions safely.",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "keywords": [
         "try",
         "catch",
@@ -61,5 +61,5 @@
         "tsup": "^8.5.0",
         "typescript": "^5.8.3",
         "vitest": "^3.1.4"
-    }    
+    }
 }
