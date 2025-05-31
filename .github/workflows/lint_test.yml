@@ -5,6 +5,9 @@ on:
     pull_request:
         types: [opened, synchronize]
 
+permissions:
+  contents: read
+
 jobs:
     lint_test:
         name: Lint & Test
@@ -12,7 +15,7 @@ jobs:
         timeout-minutes: 15
         strategy:
             matrix:
-                node-version: [23]
+                node-version: [24]
 
         steps:
             - name: Check out code
